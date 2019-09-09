@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+       /* Set the size of the div element that contains the map */
+      #map {
+        height: 400px;  /* The height is 400 pixels */
+        width: 80%;  /* The width is the width of the web page */
+       }
+    </style>
+  </head>
+  <body>
+    <h3>My Google Maps Demo</h3>
+    <input type="text" id="cp">
+    <button type="button" id="btn_cp">Buscar</button>
+    <!--The div element for the map -->
+    <div id="map"></div>
+    <script>
+     
+      // Initialize and add the map
+      function initMap() {
+        // The location of Uluru
+        var uluru = {lat: -25.344, lng: 131.036};
+        var marker;
+        const makers = [
+          {"sucursal":"Coppel Chahue","direccion":"1 Privada Nicolas Bravo Mz 2 Lt 23 R, 70989 Crucecita, Oax., Mexico","latitud":15.7631847,"longitud":-96.1294754},
+          {"sucursal":"Coppel Canada Universidad","direccion":"1, Avenida Universidad 877, Centro, 66420 San Nicolás de los Garza, N.L., Mexico","latitud":25.7538311,"longitud":-100.2973183},
+          {"sucursal":"Coppel","direccion":"11 de Julio, 26879 Nueva Rosita, Coah., Mexico","latitud":27.9370843,"longitud":-101.2040105},
+          {"sucursal":"Coppel Plaza Centro Sur","direccion":"11 SUR #11904 COLONIA GUADALUPE HIDALGO, INFONAVIT Agua Santa, 72490 Puebla, Mexico","latitud":18.9870702,"longitud":-98.2467639},
+          {"sucursal":"Coppel","direccion":"121 RAUL SALINAS LOTE #65 COLONIA PUERTA DEL SOL, 66070 Cd Gral Escobedo, N.L., Mexico","latitud":25.78849,"longitud":-100.320861}]
+
+        var options = {
+          zoom: 4,
+          center: new google.maps.LatLng(15.7631847, -96.1294754),
+          disableDefaultUI: true
+        }
+        
+        var map = new google.maps.Map(document.getElementById('map'), options);
+
+        var contentString = '<div id="content">'+
+            '<div id="siteNotice">'+
+            '</div>'+
+            '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
+            '<div id="bodyContent">'+
+            '<p>Esto es un contenido fijo</p>'+
+            '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
+            'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
+            '(last visited June 22, 2009).</p>'+
+            '</div>'+
+            '</div>';
+
+        
+        /* var script  = document.createElement('script');
+        script.src = 'https://developers.google.com/maps/documentation/javascript/examples/json/earthquake_GeoJSONP.js';
+        document.getElementsByTagName('head')[0].appendChild(script);
+        map.data.loadGeoJson('copel.json'); */
+
+        
+        var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+        var infoWind = new google.maps.InfoWindow();
+        for (var i = 0;  i < makers.length; i++) {
+        //Array.prototype.forEach.call(makers, function(sucursales) {
+          var content = document.createElement('div');
+          var strong = document.createElement('strong');
+          
+
+          marker = new google.maps.Marker({
+            map: map,
+            position: new google.maps.LatLng(makers[i].latitud, makers[i].longitud),
+            //draggable: true,
+            icon: image,
+            animation: google.maps.Animation.DROP
+            //title: sucursales.sucursal
+          });
+
+         
+          
+          
+          google.maps.event.addListener(marker, 'click', (function (marker, i) {
+              return function () {
+                infoWind.setContent(makers[i].sucursal);
+                infoWind.open(map, marker);
+              }
+          })(marker, i));
+
+  
+        }
+        
+        //marker.addListener('click', toggleBounce());
+        
+        /* window.eqfeed_callback = function(results) {
+        for (var i = 0; i < results.features.length; i++) {
+          var coords = results.features[i].geometry.coordinates;
+          var latLng = new google.maps.LatLng(coords[1],coords[0]);
+          var marker = new google.maps.Marker({
+            position: latLng,
+            map: map
+          });
+        } */
+      
+
+      }
+    </script>
+    <!--Load the API from the specified URL
+    * The async attribute allows the browser to render the page while the API loads
+    * The key parameter will contain your own API key (which is not needed for this tutorial)
+    * The callback parameter executes the initMap() function
+    -->
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=LOL&callback=initMap">
+    </script>
+  </body>
+</html>
